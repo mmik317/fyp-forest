@@ -1,1 +1,9 @@
-{}
+{
+  "function": {
+    "inferenceFunc": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  }
+}
