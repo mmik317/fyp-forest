@@ -10,6 +10,12 @@
       "StackName": "amplify-fypforest-dev-164528",
       "StackId": "arn:aws:cloudformation:us-east-1:420899468217:stack/amplify-fypforest-dev-164528/cc8cd950-84e6-11ec-9a72-0e3c98e29837",
       "AmplifyAppId": "d2zm5ctbz4ot63"
+    },
+    "categories": {
+      "auth": {
+        "fypforestb0074abe": {},
+        "true": {}
+      }
     }
   }
 }

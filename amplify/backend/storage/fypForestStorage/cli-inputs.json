@@ -1,0 +1,18 @@
+{
+  "resourceName": "fypForestStorage",
+  "policyUUID": "e02a2588",
+  "bucketName": "fypForestStorage",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
