@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "fypforest",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/apple/Documents/fyp-forest/amplify/backend/api/fypforest/schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 365,
+      "apiKeyExpirationDate": "2023-03-16T18:22:06.927Z",
+      "keyDescription": "ishaq"
+    }
+  }
+}
