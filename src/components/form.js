@@ -59,7 +59,7 @@ export default function Form() {
             handleSubmit(e);
           }}
         >
-          <div class="mb-4 mr-2 grid grid-cols-2 justify-items-center">
+          <div className="mb-4 mr-2 grid grid-cols-2 justify-items-center">
             <div>
               <label for="startingYear" className="text-white">
                 Starting Year:
