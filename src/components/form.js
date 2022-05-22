@@ -30,8 +30,8 @@ export default function Form() {
       .then(function (response) {
         console.log("data:image/png;base64," + response.data);
         setInferenceResult("data:image/png;base64," + response.data);
+        setLoading(false);
       });
-    setLoading(false);
   };
   useEffect(() => {
     return () => {};
@@ -107,16 +107,9 @@ export default function Form() {
               <option value="chitral">Chitral</option>
               <option value="battagram">Battagram</option>
               <option value="hangu">Hangu</option>
-              <option value="haripur">Haripur</option>
-              <option value="kohat">Kohat</option>
               <option value="karak">Karak</option>
-              <option value="lower_dir">Lower Dir</option>
-              <option value="malakand">Malakand</option>
-              <option value="nowshehra">Nowshehra</option>
               <option value="shangla">Shangla</option>
-              <option value="swat">Swat</option>
               <option value="tor_ghar">Tor Ghar</option>
-              <option value="upper_dir">Upper Dir</option>
             </select>
           </div>
           <div class="grid grid-cols-1 justify-items-center">
