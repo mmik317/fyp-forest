@@ -3,11 +3,13 @@ import { API } from "aws-amplify";
 import { comparisonByQuery } from "../graphql/queries";
 import { Spin } from "antd";
 import Map from "./map";
+import axios from "axios";
 
 export default function Form() {
   const [formData, updateFormData] = useState({});
   const [comparisonImage, setComparisonImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [inferenceResult, setInferenceResult] = useState("");
 
   const handleChange = (e) => {
     updateFormData({
@@ -20,28 +22,16 @@ export default function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    var load = setTimeout(async function () {
-      if (formData.startingYear !== formData.endingYear) {
-        const comparison = await API.graphql({
-          authMode: "API_KEY",
-          query: comparisonByQuery,
-          variables: {
-            query:
-              "comparisons/" +
-              formData.region +
-              "_" +
-              formData.startingYear +
-              "_" +
-              formData.endingYear +
-              "_2.png",
-          },
-        });
-
-        setComparisonImage(comparison.data.comparisonByQuery.items[0].image);
-      } else {
-      }
-    }, 5000);
-    setLoading(false)
+    axios
+      .get(
+        `http://54.161.197.55:8000/playground/hello/${formData.startingYear}/${formData.endingYear}/${formData.region}`,
+        {}
+      )
+      .then(function (response) {
+        console.log("data:image/png;base64," + response.data);
+        setInferenceResult("data:image/png;base64," + response.data);
+      });
+    setLoading(false);
   };
   useEffect(() => {
     return () => {};
@@ -135,7 +125,10 @@ export default function Form() {
             </button>
           </div>
         </form>
-        <Map/>
+        {inferenceResult != "" ? (
+          <img src={inferenceResult} alt="result" />
+        ) : null}
+        <Map />
         <Spin spinning={loading}>
           {comparisonImage != null ? (
             <div className="grid grid-cols-1 justify-items-center">

@@ -1,4 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
+import { Spin } from "antd";
+
+import axios from "axios";
 
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 
@@ -9,6 +12,7 @@ export default function Map() {
   const map = useRef(null);
   const [lng, setLng] = useState(73.2215);
   const [lat, setLat] = useState(34.1688);
+  const [inferenceResult, setInferenceResult] = useState("");
   const [zoom, setZoom] = useState(9);
   const [points, _setPoints] = useState([]);
   const pointsRef = useRef(points);
@@ -64,16 +68,54 @@ export default function Map() {
     });
   });
 
+  function polygonArea(X, Y, n) {
+    // Initialize area
+    let area = 0.0;
+
+    // Calculate value of shoelace formula
+    let j = n - 1;
+    for (let i = 0; i < n; i++) {
+      area += (X[j] + X[i]) * (Y[j] - Y[i]);
+
+      // j is previous vertex to i
+      j = i;
+    }
+
+    // Return absolute value
+    return Math.abs(area / 2.0);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (points.length != 3) {
+    console.log(
+      polygonArea(
+        [points[0].lng, points[1].lng, points[2].lng, points[3].lng],
+        [points[0].lat, points[1].lat, points[2].lat, points[3].lat],
+        4
+      )
+    );
+    if (points.length != 4) {
       alert("please select 4 points");
       return;
     }
     setLoading(true);
     console.log(formData.startingYear, formData.endingYear, formData.region);
-    console.log(points);
-    setLoading(false);
+    console.log(
+      `http://100.26.106.93:8001/playground/map/${formData.startingYear}/${formData.endingYear}/${formData.region}/${points[0].lng}/${points[0].lat}/${points[1].lng}/${points[1].lat}/${points[2].lng}/${points[2].lat}/${points[3].lng}/${points[3].lat}/`
+    );
+    axios
+      .get(
+        // `http://54.161.197.55:8000/playground/hello/${formData.startingYear}/${formData.endingYear}/${formData.region}/${points[0].lng}/${points[0].lat}/${points[1].lng}/${points[1].lat}/${points[2].lng}/${points[2].lat}/${points[3].lng}/${points[4].lat}/`,
+        // "http://184.73.114.175:8001/playground/map/2018/2019/abbottabad/73.18030126953235/34.15743681038424/73.22973974609442/34.16198226976158/73.19266088867246/34.11537971335815/73.23111303711033/34.11424274460673/",
+        `http://100.26.106.93:8001/playground/map/${formData.startingYear}/${formData.endingYear}/${formData.region}/${points[0].lng}/${points[0].lat}/${points[1].lng}/${points[1].lat}/${points[2].lng}/${points[2].lat}/${points[3].lng}/${points[3].lat}/`,
+
+        {}
+      )
+      .then(function (response) {
+        console.log("data:image/png;base64," + response.data);
+        setInferenceResult("data:image/png;base64," + response.data);
+        setLoading(false);
+      });
   };
 
   return (
@@ -143,6 +185,14 @@ export default function Map() {
           </button>
         </div>
       </form>
+      <Spin spinning={loading}>
+        {inferenceResult != "" ? (
+          <div className="grid grid-cols-1 justify-items-center">
+            <h1 className="text-white">Comparison</h1>
+            <img src={inferenceResult} alt="result" />
+          </div>
+        ) : null}
+      </Spin>
     </>
   );
 }
